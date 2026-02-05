@@ -3,15 +3,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Minecraft Skin Renderer</title>
+    <title>Minecraft Skin Hub</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
         <div class="box">
-        <h2>Minecraft Skin Renderer</h2>
+        <h2>Skin Hub</h2>
         <div class="iinput">
             <input id="nameInput" placeholder="Minecraft username">
+            <br>
             <button onclick="renderSkin()">Render Skin</button>
 
             <button onclick="downloadNormalSkin()">Download Normal Skin</button>
@@ -22,10 +23,11 @@
         <canvas id="skinCanvas" width="300" height="400"></canvas>
 
 
-        <div">
+        <div class="test4">
             <button onclick="downloadSkinWithOverlay('suit')">Suit</button>
-            <button onclick="downloadSkinWithOverlay('strawhat')">Straw Hat</button>
             <button onclick="downloadSkinWithOverlay('suit2')">Suit2</button>
+            <button onclick="downloadSkinWithOverlay('strawhat')">Straw Hat</button>
+            <button onclick="downloadSkinWithOverlay('migration')">Migration</button>
         </div>
 
 
@@ -98,6 +100,11 @@
                 overlay1Path = "assets/suit2.png";
                 downloadSuffix = "_suit2.png";
 
+            } else if (type === "migration") {
+                overlay1Path = "assets/migration/migration_layer1.png";
+                overlay2Path = "assets/migration/migration_layer2.png";
+                maskPath = "assets/migration/migration_mask.png";
+                downloadSuffix = "_migration.png";
             } else {
                 alert("Unknown overlay type!");
                 return;
