@@ -1,31 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Minecraft Skin Renderer</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
+        <div class="box">
+        <h2>Minecraft Skin Renderer</h2>
+        <div class="iinput">
+            <input id="nameInput" placeholder="Minecraft username">
+            <button onclick="renderSkin()">Render Skin</button>
+
+            <button onclick="downloadNormalSkin()">Download Normal Skin</button>
 
 
-    <div class="test">
-        <div style="flex-grow: 1"><h1>moin</h1></div>
-    </div>
-
-    <div class="lol">   
-        <div style="flex-grow: 2">
-            <a href="https://github.com/schatzsuche"><button>Github</button></a>
-        </div> 
-        <div>
-            <img src="assets/logo.png" width="50" height="50">
         </div>
-        <div style="flex-grow: 3">
-            <p>test</p>
-        </div> 
-        
-    
-        
+
+        <canvas id="skinCanvas" width="300" height="400"></canvas>
+
+
+        <div">
+            <button onclick="downloadSkinWithOverlay('suit')">Suit</button>
+            <button onclick="downloadSkinWithOverlay('strawhat')">Straw Hat</button>
+            <button onclick="downloadSkinWithOverlay('suit2')">Suit2</button>
+        </div>
+
+
     </div>
+
+    
+
+
+    <script src="https://unpkg.com/skinview3d/bundles/skinview3d.bundle.js"></script>
+
+    <script>
+        let defaultName = "Schatzsuche";
+
+        // --------------------
+        // 3D Skin Viewer
+        // --------------------
+        let viewer = new skinview3d.SkinViewer({
+            canvas: document.getElementById("skinCanvas"),
+            width: 300,
+            height: 400
+        });
+        viewer.controls.enableRotate = true;
+        viewer.controls.enableZoom = false;
+
+        function getCurrentName() {
+            let input = document.getElementById("nameInput").value;
+            return input !== "" ? input : defaultName;
+        }
+
+        function showSkin(name) {
+            viewer.loadSkin("https://mc-heads.net/skin/" + name);
+        }
+
+        function renderSkin() {
+            showSkin(getCurrentName());
+        }
+
+        // --------------------
+        // Downloads
+        // --------------------
+        async function downloadNormalSkin() {
+            let name = getCurrentName();
+            let blob = await fetch("https://mc-heads.net/skin/" + name).then(r => r.blob());
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = name + "_normal.png";
+            link.click();
+        }
+
+        // --------------------
+        // Modular overlay function
+        // --------------------
+        async function downloadSkinWithOverlay(type) {
+            let name = getCurrentName();
+
+            let overlay1Path = null;
+            let overlay2Path = null;
+            let maskPath = null;
+            let downloadSuffix = "_overlay.png";
+
+            if (type === "suit") {
+                overlay1Path = "assets/suit.png";
+                downloadSuffix = "_suit.png";
+            } else if (type === "strawhat") {
+                overlay1Path = "assets/strawhat/strawhat_layer1.png";
+                overlay2Path = "assets/strawhat/strawhat_layer2.png";
+                maskPath = "assets/strawhat/strawhat_mask.png";
+                downloadSuffix = "_strawhat.png";
+            } else if (type === "suit2") {
+                overlay1Path = "assets/suit2.png";
+                downloadSuffix = "_suit2.png";
+
+            } else {
+                alert("Unknown overlay type!");
+                return;
+            }
+
+            try {
+                
+                let skinBlob = await fetch("https://mc-heads.net/skin/" + name).then(r => r.blob());
+                let skinImg = await blobToImage(skinBlob);
+
+                
+                let overlay1Img = await blobToImage(await fetch(overlay1Path).then(r => r.blob()));
+                let overlay2Img = overlay2Path ? await blobToImage(await fetch(overlay2Path).then(r => r.blob())) : null;
+                let maskImg = maskPath ? await blobToImage(await fetch(maskPath).then(r => r.blob())) : null;
+
+                let canvas = document.createElement("canvas");
+                canvas.width = 64;
+                canvas.height = 64;
+                let ctx = canvas.getContext("2d");
+
+                
+                ctx.drawImage(skinImg, 0, 0);
+
+                
+                if (maskImg) applyMask(ctx, maskImg);
+
+                
+                ctx.drawImage(overlay1Img, 0, 0);
+                if (overlay2Img) ctx.drawImage(overlay2Img, 0, 0);
+
+                
+                let link = document.createElement("a");
+                link.href = canvas.toDataURL("image/png");
+                link.download = name + downloadSuffix;
+                link.click();
+
+            } catch (err) {
+                console.error("Error downloading overlay skin:", err);
+                alert("Failed to download overlay skin. Make sure all asset files exist.");
+            }
+        }
+
+        // --------------------
+        // Helpers
+        // --------------------
+        function blobToImage(blob) {
+            return new Promise(resolve => {
+                let img = new Image();
+                img.onload = () => resolve(img);
+                img.src = URL.createObjectURL(blob);
+            });
+        }
+
+        function applyMask(ctx, maskImg) {
+            let maskCanvas = document.createElement("canvas");
+            maskCanvas.width = 64;
+            maskCanvas.height = 64;
+            let maskCtx = maskCanvas.getContext("2d");
+            maskCtx.drawImage(maskImg, 0, 0);
+
+            let maskData = maskCtx.getImageData(0, 0, 64, 64);
+            let skinData = ctx.getImageData(0, 0, 64, 64);
+
+            for (let i = 0; i < maskData.data.length; i += 4) {
+                let r = maskData.data[i];
+                let g = maskData.data[i + 1];
+                let b = maskData.data[i + 2];
+                let a = maskData.data[i + 3];
+
+                if (r === 0 && g === 0 && b === 0 && a > 0) {
+                    skinData.data[i + 3] = 0;
+                }
+            }
+            ctx.putImageData(skinData, 0, 0);
+        }
+
+        // --------------------
+        // Initialize default skin
+        // --------------------
+        showSkin(defaultName);
+
+    </script>
+
 </body>
+
 </html>

@@ -1,42 +1,27 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+html {
+    scroll-behavior: smooth;
+}
 
 body {
-    background: #030405;
-    display: flex;
-    justify-content: center;
+    background-color: #13131B;
     color: white;
     font-family: 'Space Mono', monospace;
-    align-items: center;
-    height: 100vh;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.4);
-    transform: scale(1.1);
-    overflow: hidden;
-}
-.box {
-    background: #2b2b2b;
-    padding: 20px;
-    border-radius: 10px;
-    width: 320px;
-    text-align: center;
 }
 input {
     scale: 1.2;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.4);
 }
-.iinput, button {
-    width: 100%;
-    padding: 8px;
-    margin-top: 8px;
-    border-radius: 8px;
-    border: none;
-}
 button {
     background: #557C99;
     color: white;
     cursor: pointer;
+    border: none;
+    border-radius: 5px;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.4);
 }
@@ -45,23 +30,15 @@ button:hover {
     color: white;
     cursor: pointer;
 }
-canvas {
-    margin-top: 15px;
-}
-.test{
-  display: flex;
-  justify-content: center;
-  text-align: center;  
-  font-size: 30px;
-}
-.test button{
-  margin: 9px;
-  padding: 10px;
-
-}
 section {
     display: grid;
     place-items: center;
     align-content: center;
     min-height: 100vh;
+}
+nav {
+    position: sticky;
+    top: 0;
+    padding: 10px 0;
+    z-index: 1000;
 }
