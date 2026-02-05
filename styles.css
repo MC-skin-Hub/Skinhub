@@ -2,15 +2,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
 
 body {
-    background: #030405;
+    background: #1e1e1e;
     display: flex;
     justify-content: center;
     color: white;
     font-family: 'Space Mono', monospace;
     align-items: center;
     height: 100vh;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.4);
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
     transform: scale(1.1);
     overflow: hidden;
 }
@@ -23,8 +23,8 @@ body {
 }
 input {
     scale: 1.2;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.4);
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
 }
 .iinput, button {
     width: 100%;
@@ -37,8 +37,8 @@ button {
     background: #557C99;
     color: white;
     cursor: pointer;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.4);
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
 }
 button:hover {
     background: #375062;
