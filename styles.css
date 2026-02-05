@@ -38,11 +38,13 @@ button {
     cursor: pointer;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
     box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+    width: 25%;
 }
 button:hover {
     background: #375062;
     color: white;
     cursor: pointer;
+    
 }
 canvas {
     margin-top: 15px;
