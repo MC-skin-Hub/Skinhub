@@ -3,12 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Minecraft Skin Hub</title>
+    <title>Skin Hub</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="assets/logo.ico" type="image/x-icon">
 </head>
 
 <body>
-        <div class="box">
+    <div class="box">
         <h2>Skin Hub</h2>
         <div class="iinput">
             <input id="nameInput" placeholder="Minecraft username">
@@ -33,7 +34,7 @@
 
     </div>
 
-    
+
 
 
     <script src="https://unpkg.com/skinview3d/bundles/skinview3d.bundle.js"></script>
@@ -111,11 +112,11 @@
             }
 
             try {
-                
+
                 let skinBlob = await fetch("https://mc-heads.net/skin/" + name).then(r => r.blob());
                 let skinImg = await blobToImage(skinBlob);
 
-                
+
                 let overlay1Img = await blobToImage(await fetch(overlay1Path).then(r => r.blob()));
                 let overlay2Img = overlay2Path ? await blobToImage(await fetch(overlay2Path).then(r => r.blob())) : null;
                 let maskImg = maskPath ? await blobToImage(await fetch(maskPath).then(r => r.blob())) : null;
@@ -125,17 +126,17 @@
                 canvas.height = 64;
                 let ctx = canvas.getContext("2d");
 
-                
+
                 ctx.drawImage(skinImg, 0, 0);
 
-                
+
                 if (maskImg) applyMask(ctx, maskImg);
 
-                
+
                 ctx.drawImage(overlay1Img, 0, 0);
                 if (overlay2Img) ctx.drawImage(overlay2Img, 0, 0);
 
-                
+
                 let link = document.createElement("a");
                 link.href = canvas.toDataURL("image/png");
                 link.download = name + downloadSuffix;
